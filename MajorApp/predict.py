@@ -73,15 +73,17 @@ class URL():
         #methods
         url = self.findHREF(url)
         if url:
-            self.flag = True
-            self.findSSLPreSufSubDomain(url)          #gets the value of features: 'SSLfinal_state' , 'Prefix_Suffix', 'having_Sub_Domain'.
-            self.findWebTraffic(url)                  #gets the value of feature: 'web_traffic'.
-            self.findRequestURLandURLofAnchor(url)    #gets the value of features: 'Request_URL' , 'URL_of_Anchor'
-            self.findLinksInTags(url)                 #gets the value of feature: 'Links_in_tags'
-            self.findSFH(url)                          #gets the value of feature: 'SFH'
-
+            if url[:3] != 'www':
+                self.flag = True
+                self.findSSLPreSufSubDomain(url)          #gets the value of features: 'SSLfinal_state' , 'Prefix_Suffix', 'having_Sub_Domain'.
+                self.findWebTraffic(url)                  #gets the value of feature: 'web_traffic'.
+                self.findRequestURLandURLofAnchor(url)    #gets the value of features: 'Request_URL' , 'URL_of_Anchor'
+                self.findLinksInTags(url)                 #gets the value of feature: 'Links_in_tags'
+                self.findSFH(url)                          #gets the value of feature: 'SFH'
+            else:
+                print("!! Please feed a proper URL !!")
         else:
-            return
+            print("!! Please feed a proper URL !!")
 
     def getFlag(self):
         return self.flag
@@ -97,6 +99,12 @@ class URL():
         #a URL consists: scheme://netloc/path;parameters?query#fragment
         #the netloc part contains what we need: domain
         result =  '{uri.netloc}'.format(uri=parsed_uri)
+        if 'www1' in result:
+            result = result.split('www1.')[1]
+
+        if 'www2' in result:
+            result = result.split('www2.')[1]
+            
         if 'www' in result:
             result = result.split('www.')[1]
         return result
@@ -498,7 +506,7 @@ def predictURL(input_url):
         if predicted[0] == 1:
             predictedURL = '|| Legitimate ||'
         else:
-            predictedURL = "XX Phishing XX "
+            predictedURL = "XX Phishing XX"
         #print()
         return predictedURL
     else:

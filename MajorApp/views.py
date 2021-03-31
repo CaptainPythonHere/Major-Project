@@ -5,17 +5,17 @@ from MajorApp import predict
 
 def index(request):
     getForm = UserForm()
-    url = URLform()
+    URL = URLform()
     if request.method == "POST" and 'urlform' in request.POST:
-        url = URLform(request.POST)
-        if url.is_valid():
-            cleanedurl = url.cleaned_data['url']
+        URL = URLform(request.POST)
+        if URL.is_valid():
+            cleanedurl = URL.cleaned_data['url']
             #print(cleanedurl)
             #print(str(cleanedurl))
             string_url = str(cleanedurl)
             predicted = predict.predictURL(string_url)
             #print(predicted)
-            return render(request,'majorapp/index.html',{'url':url,'predicted':predicted, 'getForm':getForm})
+            return render(request,'majorapp/index.html',{'URL':URL,'predicted':predicted, 'getForm':getForm})
     #else:
     #    url = URLform()
 
@@ -24,8 +24,8 @@ def index(request):
         if getForm.is_valid():
             getForm.save(commit=True)
             string = "Your feedback has been submitted!"
-            return render(request,'majorapp/index.html',{'url':url, 'getForm':getForm,'string':string})
+            return render(request,'majorapp/index.html',{'URL':URL, 'getForm':getForm,'string':string})
 
     #else:
     #    getForm = UserForm()
-    return render(request, 'majorapp/index.html',{'url':url, 'getForm':getForm})
+    return render(request, 'majorapp/index.html',{'URL':URL, 'getForm':getForm})
